@@ -4,10 +4,11 @@
       <div>
         <Player />
       </div>
-      <div class="d-flex flex-column justify-content-center" style="height: 100vh;">
+      <Waiting v-if="phase === 'waiting'" :choose="this.choose" />
+      <div v-if="phase !== 'waiting'" class="d-flex flex-column justify-content-center" style="height: 100vh;">
         <div class="row">
           <div class="col-4 p-3">
-            <button class="btn number rounded border-0">
+            <button @click.prevent="click(1)" class="btn number rounded border-0">
               <h1 class="text-white">1</h1>
             </button>
           </div>
@@ -56,10 +57,29 @@
 
 <script>
 import Player from './Player.vue'
+import Waiting from './Waiting'
 
 export default {
+  name: 'Board',
+  data () {
+    return {
+      dice: '',
+      phase: '',
+      choose: ''
+    }
+  },
   components: {
-    Player
+    Player,
+    Waiting
+  },
+  methods: {
+    click (num) {
+      this.dice = num
+      this.phase = 'waiting'
+      this.choose = num
+      console.log(num)
+      this.$store.dispatch('bidPhases', -10000)
+    }
   }
 }
 </script>
