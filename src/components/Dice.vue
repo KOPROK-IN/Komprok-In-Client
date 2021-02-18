@@ -7,14 +7,15 @@
 <script>
 export default {
   name: 'Dice',
-  data () {
-    return {
-      result: Math.floor(Math.random() * 6) + 1
+  props: ['result', 'changePhase', 'choose', 'rolling'],
+  created () {
+    if (this.choose === this.result) {
+      this.$store.dispatch('bidPhases', 30000)
     }
+    setTimeout(() => {
+      this.rolling()
+      this.changePhase('bidding')
+    }, 5000)
   }
 }
 </script>
-
-<style>
-
-</style>

@@ -4,8 +4,9 @@
       <div>
         <Player />
       </div>
-      <Waiting v-if="phase === 'waiting'" :choose="this.choose" />
-      <div v-if="phase !== 'waiting'" class="d-flex flex-column justify-content-center" style="height: 100vh;">
+      <Waiting v-if="phase === 'waiting'" :choose="this.choose"/>
+      <Dice v-if="phase === 'rolled'" :result="result" :changePhase="changePhase" :choose="choose" :rolling="rolling"/>
+      <div v-if="phase !== 'waiting' && phase !== 'rolled'" class="d-flex flex-column justify-content-center" style="height: 100vh;">
         <div class="row">
           <div class="col-4 p-3">
             <button @click.prevent="click(1)" class="btn number rounded border-0">
@@ -58,6 +59,7 @@
 <script>
 import Player from './Player.vue'
 import Waiting from './Waiting'
+import Dice from './Dice'
 
 export default {
   name: 'Board',
@@ -65,21 +67,34 @@ export default {
     return {
       dice: '',
       phase: '',
-      choose: ''
+      choose: '',
+      result: Math.floor(Math.random() * 6) + 1
     }
   },
   components: {
     Player,
-    Waiting
+    Waiting,
+    Dice
   },
   methods: {
     click (num) {
       this.dice = num
-      this.phase = 'waiting'
+      this.phase = 'rolled'
       this.choose = num
       console.log(num)
       this.$store.dispatch('bidPhases', -10000)
+    },
+    changePhase (value) {
+      this.phase = value
+    },
+    rolling () {
+      this.result = Math.floor(Math.random() * 6) + 1
     }
+  },
+  created () {
+    setTimeout(() => {
+      this.phase = 'rolled'
+    }, 5000)
   }
 }
 </script>
