@@ -62,7 +62,6 @@ export default {
       }
       this.email_login = ''
       this.password_login = ''
-
       this.$store.dispatch('login', dataInput)
     }
   }
