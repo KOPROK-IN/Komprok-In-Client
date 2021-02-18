@@ -1,13 +1,17 @@
 <template>
-  <div class="container-fluid text-center" style="width: 70%;">
-    <div class="d-flex flex-column justify-content-center" style="height: 100vh;">
-      <div class="row">
-        <div class="col-4 p-3">
-          <button class="btn number rounded border-0">
-            <h1 class="text-white">1</h1>
-          </button>
-        </div>
-        <div class="col-4 p-3">
+  <div class="container-fluid text-center" style="width: 100%;">
+    <div class="d-flex">
+      <div>
+        <Player />
+      </div>
+      <div class="d-flex flex-column justify-content-center" style="height: 100vh;">
+        <div class="row">
+          <div class="col-4 p-3">
+            <button class="btn number rounded border-0">
+              <h1 class="text-white">1</h1>
+            </button>
+          </div>
+          <div class="col-4 p-3">
           <button class="btn number rounded border-0">
             <h1 class="text-white">2</h1>
           </button>
@@ -46,12 +50,17 @@
         </div>
       </div>
     </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default {
+import Player from './Player.vue'
 
+export default {
+  components: {
+    Player
+  }
 }
 </script>
 
