@@ -8,14 +8,14 @@
     <div class="row justify-content-center" >
 
       <div class="col-4">
-        <div class="h3"><b>Let's Logging In:</b></div>
+        <div class="h3"><b>Let's Joining With Us:</b></div>
 
-        <form @submit.prevent="login">
+        <form @submit.prevent="register">
           <div class="form-floating mb-3">
             <input
               type="email"
               class="form-control"
-              v-model="email_login"
+              v-model="email_register"
               placeholder="name@example.com"
               required
             >
@@ -26,7 +26,7 @@
             <input
               type="password"
               class="form-control"
-              v-model="password_login"
+              v-model="password_register"
               placeholder="Password"
               required
             >
@@ -36,11 +36,11 @@
           <button
             type="submit"
             class="btn btn-outline-primary"
-          >Login <span class="fa fa-user"></span>
+          >Register <span class="fa fa-user-plus"></span>
           </button>
 
         </form>
-        <router-link :to="{ name: 'Register' }" class="nav-link text-gray mt-3">Don't have an account? click here to register Yeay!!! </router-link>
+        <router-link :to="{ name: 'Login' }" class="nav-link text-gray mt-3">Back to Login Form </router-link>
       </div>
       <!-- END FORM -->
     </div>
@@ -51,25 +51,19 @@
 export default {
   data () {
     return {
-      email_login: '',
-      password_login: ''
-    }
-  },
-  sockets: {
-    connect () {
-      console.log(this.$socket.id, this.name)
+      email_register: '',
+      password_register: ''
     }
   },
   methods: {
-    login () {
+    register () {
       const dataInput = {
-        email: this.email_login,
-        password: this.password_login
+        email: this.email_register,
+        password: this.password_register
       }
-      this.$store.dispatch('login', dataInput)
-      this.$socket.emit('login', dataInput.email)
-      this.email_login = ''
-      this.password_login = ''
+      this.email_register = ''
+      this.password_register = ''
+      this.$store.dispatch('register', dataInput)
     }
   }
 }

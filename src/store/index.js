@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from '../api/axios'
 import router from '../router/index'
+import Swal from 'sweetalert2'
 
 Vue.use(Vuex)
 
@@ -32,7 +33,12 @@ export default new Vuex.Store({
         })
         .catch((err) => {
           if (err.response) {
-            console.log(err.response)
+            console.log(err.response.data.error)
+            Swal.fire({
+              icon: 'error',
+              title: 'Oops...',
+              text: `${err.response.data.error}`
+            })
           }
         })
     },
@@ -70,6 +76,32 @@ export default new Vuex.Store({
     },
     SOCKET_listPlayers (context, payload) {
       context.commit('setPlayers', payload)
+    },
+    register (context, payload) {
+      axios({
+        method: 'POST',
+        url: '/register',
+        data: {
+          email: payload.email,
+          password: payload.password
+        }
+      })
+        .then(({ data }) => {
+          router.push('/login')
+          Swal.fire(
+            'Good job ^_^',
+            `Your email ${data.email} has been registered`,
+            'success'
+          )
+        })
+        .catch(err => {
+          console.log(err)
+          Swal.fire({
+            icon: 'error',
+            title: 'Oops...',
+            text: `${err.response.data.error}`
+          })
+        })
     }
   }
 })
