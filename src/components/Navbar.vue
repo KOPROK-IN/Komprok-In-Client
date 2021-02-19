@@ -19,6 +19,12 @@ export default {
     logout () {
       localStorage.clear()
       this.$router.push('/login')
+      this.$socket.emit('logout', this.player.email)
+    }
+  },
+  computed: {
+    player () {
+      return this.$store.state.player
     }
   }
 }

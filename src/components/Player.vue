@@ -10,20 +10,6 @@
             <div class="info">{{ player.money }}</div>
           </div>
         </div>
-        <div class="col col-12 md-5 mb-1 player">
-          <div>
-            <div class="card-title">bid:Rp(choose)</div>
-            <div class="card-body"><img src="pp.png" alt="profile"></div>
-            <div class="info">NAME/Saldo</div>
-          </div>
-        </div>
-        <div class="col col-12  md-5 mb-1 player">
-          <div>
-            <div class="card-title">bid:Rp(choose)</div>
-            <div class="card-body"><img src="pp.png" alt="profile"></div>
-            <div class="info">NAME/Saldo</div>
-          </div>
-        </div>
       </div>
     </div>
   </div>
