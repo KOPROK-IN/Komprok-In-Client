@@ -98,13 +98,24 @@ export default {
     },
     rolling () {
       this.result = Math.floor(Math.random() * 6) + 1
+    },
+    timeSetupBid () {
+      setTimeout(() => {
+        this.phase = 'rolled'
+        this.bidAction = 'unwaiting'
+        this.timeSetupRoll()
+      }, 5000)
+    },
+    timeSetupRoll () {
+      setTimeout(() => {
+        this.rolling()
+        this.changePhase('bidding')
+        this.timeSetupBid()
+      }, 3500)
     }
   },
   created () {
-    setTimeout(() => {
-      this.phase = 'rolled'
-      this.bidAction = 'unwaiting'
-    }, 5000)
+    this.timeSetupBid()
   }
 }
 </script>

@@ -20,10 +20,6 @@ export default {
         this.$store.dispatch('bidPhases', 20000)
       }
     }
-    setTimeout(() => {
-      this.rolling()
-      this.changePhase('bidding')
-    }, 5000)
   }
 }
 </script>
