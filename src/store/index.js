@@ -7,11 +7,19 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
-    player: {}
+    player: {},
+    dice: 0,
+    players: []
   },
   mutations: {
     setPlayer (state, payload) {
       state.player = payload
+    },
+    setDice (state, payload) {
+      state.dice = payload
+    },
+    setPlayers (state, payload) {
+      state.players = payload
     }
   },
   actions: {
@@ -36,7 +44,6 @@ export default new Vuex.Store({
           access_token: localStorage.access_token
         }
       }).then(({ data }) => {
-        console.log(data)
         context.commit('setPlayer', data)
       }).catch((err) => {
         console.log(err)
@@ -57,6 +64,12 @@ export default new Vuex.Store({
       }).catch((err) => {
         console.log(err)
       })
+    },
+    SOCKET_rollDice (context, number) {
+      context.commit('setDice', number)
+    },
+    SOCKET_listPlayers (context, payload) {
+      context.commit('setPlayers', payload)
     }
   }
 })

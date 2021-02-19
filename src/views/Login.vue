@@ -54,15 +54,21 @@ export default {
       password_login: ''
     }
   },
+  sockets: {
+    connect () {
+      console.log(this.$socket.id, this.name)
+    }
+  },
   methods: {
     login () {
       const dataInput = {
         email: this.email_login,
         password: this.password_login
       }
+      this.$store.dispatch('login', dataInput)
+      this.$socket.emit('login', dataInput.email)
       this.email_login = ''
       this.password_login = ''
-      this.$store.dispatch('login', dataInput)
     }
   }
 }

@@ -3,6 +3,7 @@
     <div class="d-flex">
       <div class="col-2">
         <Player />
+        <p>{{ players }}</p>
       </div>
       <div class="d-flex flex-column justify-content-center col-10 wkwk" style="height: 100vh;">
         <div class="row" v-if="phase !== 'rolled'">
@@ -15,7 +16,7 @@
           <Waiting v-if="bidAction === 'waiting'" :choose="this.choose"/>
         </div>
         <div class="row" v-if="phase === 'rolled'">
-          <Dice :result="result" :changePhase="changePhase" :choose="choose" :rolling="rolling"/>
+          <Dice :dice="dice" :choose="choose" />
         </div>
         <div class="row" v-if="phase !== 'rolled' && bidAction !== 'waiting'">
           <div class="col-4 p-3">
@@ -78,13 +79,29 @@ export default {
       phase: '',
       bidAction: '',
       choose: '',
-      result: Math.floor(Math.random() * 6) + 1
+      result: this.$store.state.dice
     }
   },
   components: {
     Player,
     Waiting,
     Dice
+  },
+  sockets: {
+    connect () {
+      console.log(this.$socket.id, this.name)
+    }
+  },
+  computed: {
+    dice () {
+      return this.$store.state.dice
+    },
+    players () {
+      return this.$store.state.players
+    },
+    email () {
+      return this.$store.state.player.email
+    }
   },
   methods: {
     click (num) {
@@ -96,26 +113,49 @@ export default {
     changePhase (value) {
       this.phase = value
     },
-    rolling () {
-      this.result = Math.floor(Math.random() * 6) + 1
-    },
-    timeSetupBid () {
+    timeSetupBid (time) {
+      if (!time) time = 5000
       setTimeout(() => {
         this.phase = 'rolled'
         this.bidAction = 'unwaiting'
         this.timeSetupRoll()
-      }, 5000)
+      }, time)
     },
-    timeSetupRoll () {
+    timeSetupRoll (time) {
+      if (!time) time = 5000
       setTimeout(() => {
-        this.rolling()
         this.changePhase('bidding')
         this.timeSetupBid()
-      }, 3500)
+      }, time)
+    },
+    starting () {
+      let flagBid = true
+      let flagRoll = true
+      const time = new Date()
+      const sec = time.getUTCSeconds() % 10
+      if (sec >= 6 && sec <= 10 && flagBid) {
+        this.phase = 'rolled'
+        this.bidAction = 'unwaiting'
+        flagBid = false
+      } else if (flagRoll && sec >= 1 && sec <= 5) {
+        this.changePhase('bidding')
+        flagRoll = false
+      }
+      if (flagBid || flagRoll) {
+        // console.log(sec)
+        if (!flagBid) {
+          this.timeSetupRoll(6000)
+        } else if (!flagRoll) {
+          this.timeSetupBid(6000)
+        }
+        return setTimeout(() => {
+          this.starting()
+        }, 1000)
+      }
     }
   },
   created () {
-    this.timeSetupBid()
+    this.starting()
   }
 }
 </script>
