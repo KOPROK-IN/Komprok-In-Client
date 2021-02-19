@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>TUNGGU OYYYYYY</h1>
-    <h1>{{ choose }}</h1>
+    <h1>You Bid At Box: {{ choose }}</h1>
   </div>
 </template>
 

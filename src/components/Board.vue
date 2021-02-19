@@ -1,57 +1,67 @@
 <template>
   <div class="container-fluid text-center" style="width: 100%;">
     <div class="d-flex">
-      <div>
+      <div class="col-2">
         <Player />
       </div>
-      <Waiting v-if="phase === 'waiting'" :choose="this.choose"/>
-      <Dice v-if="phase === 'rolled'" :result="result" :changePhase="changePhase" :choose="choose" :rolling="rolling"/>
-      <div v-if="phase !== 'waiting' && phase !== 'rolled'" class="d-flex flex-column justify-content-center" style="height: 100vh;">
-        <div class="row">
+      <div class="d-flex flex-column justify-content-center col-10 wkwk" style="height: 100vh;">
+        <div class="row" v-if="phase !== 'rolled'">
+          <div class="h1 col-12">PHASE BIDDING</div>
+        </div>
+        <div class="row" v-if="phase === 'rolled'">
+          <div class="h1 col-12">PHASE ROLLING</div>
+        </div>
+        <div class="row" v-if="bidAction === 'waiting'">
+          <Waiting v-if="bidAction === 'waiting'" :choose="this.choose"/>
+        </div>
+        <div class="row" v-if="phase === 'rolled'">
+          <Dice :result="result" :changePhase="changePhase" :choose="choose" :rolling="rolling"/>
+        </div>
+        <div class="row" v-if="phase !== 'rolled' && bidAction !== 'waiting'">
           <div class="col-4 p-3">
             <button @click.prevent="click(1)" class="btn number rounded border-0">
               <h1 class="text-white">1</h1>
             </button>
           </div>
           <div class="col-4 p-3">
-          <button class="btn number rounded border-0">
-            <h1 class="text-white">2</h1>
-          </button>
+            <button @click.prevent="click(2)" class="btn number rounded border-0">
+              <h1 class="text-white">2</h1>
+            </button>
+          </div>
+          <div class="col-4 p-3">
+            <button @click.prevent="click(3)" class="btn number rounded border-0">
+              <h1 class="text-white">3</h1>
+            </button>
+          </div>
+          <div class="col-4 p-3">
+            <button @click.prevent="click(4)" class="btn number rounded border-0">
+              <h1 class="text-white">4</h1>
+            </button>
+          </div>
+          <div class="col-4 p-3">
+            <button @click.prevent="click(5)" class="btn number rounded border-0">
+              <h1 class="text-white">5</h1>
+            </button>
+          </div>
+          <div class="col-4 p-3">
+            <button @click.prevent="click(6)" class="btn number rounded border-0">
+              <h1 class="text-white">6</h1>
+            </button>
+          </div>
         </div>
-        <div class="col-4 p-3">
-          <button class="btn number rounded border-0">
-            <h1 class="text-white">3</h1>
-          </button>
-        </div>
-        <div class="col-4 p-3">
-          <button class="btn number rounded border-0">
-            <h1 class="text-white">4</h1>
-          </button>
-        </div>
-        <div class="col-4 p-3">
-          <button class="btn number rounded border-0">
-            <h1 class="text-white">5</h1>
-          </button>
-        </div>
-        <div class="col-4 p-3">
-          <button class="btn number rounded border-0">
-            <h1 class="text-white">6</h1>
-          </button>
+        <div class="row" v-if="phase !== 'rolled' && bidAction !== 'waiting'">
+          <div class="col-6">
+            <button @click.prevent="click('odd')" class="btn number rounded border-0 bg-success">
+              <h1 class="text-white">odd</h1>
+            </button>
+          </div>
+          <div class="col-6">
+            <button @click.prevent="click('even')" class="btn btn-primary number rounded border-0 bg-success">
+              <h1 class="text-white">even</h1>
+            </button>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-6">
-          <button class="btn number rounded border-0 bg-success">
-            <h1 class="text-white">odd</h1>
-          </button>
-        </div>
-        <div class="col-6">
-          <button class="btn btn-primary number rounded border-0 bg-success">
-            <h1 class="text-white">even</h1>
-          </button>
-        </div>
-      </div>
-    </div>
     </div>
   </div>
 </template>
@@ -65,8 +75,8 @@ export default {
   name: 'Board',
   data () {
     return {
-      dice: '',
       phase: '',
+      bidAction: '',
       choose: '',
       result: Math.floor(Math.random() * 6) + 1
     }
@@ -78,8 +88,7 @@ export default {
   },
   methods: {
     click (num) {
-      this.dice = num
-      this.phase = 'rolled'
+      this.bidAction = 'waiting'
       this.choose = num
       console.log(num)
       this.$store.dispatch('bidPhases', -10000)
@@ -94,6 +103,7 @@ export default {
   created () {
     setTimeout(() => {
       this.phase = 'rolled'
+      this.bidAction = 'unwaiting'
     }, 5000)
   }
 }
@@ -120,5 +130,8 @@ export default {
     .container-fluid {
       width: 100% !important;
     }
+  }
+  .wkwk {
+    border: 1px solid black
   }
 </style>
